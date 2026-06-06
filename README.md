@@ -8,7 +8,7 @@
 docker-compose up -d
 ```
 
-기본 주소는 `http://localhost:8080`입니다.
+기본 주소는 `http://localhost:8090`입니다.
 
 ## Portainer Stack 배포
 
@@ -19,10 +19,10 @@ Repository URL: https://github.com/jaehun0630/tchoupi-audiobook-player.git
 Compose path: portainer-stack.yml
 ```
 
-기본 공개 포트는 `8080`입니다. 다른 포트를 사용하려면 stack 환경 변수에 아래 값을 추가합니다.
+기본 공개 포트는 `8090`입니다. 다른 포트를 사용하려면 stack 환경 변수에 아래 값을 추가합니다.
 
 ```text
-TCHOUPI_HTTP_PORT=8090
+TCHOUPI_HTTP_PORT=9010
 ```
 
 ## QR 링크 형식

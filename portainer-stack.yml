@@ -2,7 +2,7 @@ services:
   tchoupi-web:
     image: nginx:alpine
     ports:
-      - "${TCHOUPI_HTTP_PORT:-8080}:80"
+      - "${TCHOUPI_HTTP_PORT:-8090}:8090"
     volumes:
       - ./html:/usr/share/nginx/html:ro
       - ./nginx:/etc/nginx/conf.d:ro

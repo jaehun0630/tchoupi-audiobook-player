@@ -5,7 +5,7 @@ services:
     image: nginx:alpine
     container_name: tchoupi-web
     ports:
-      - "8080:80"  # ← 여기만 수정
+      - "8090:8090"
     volumes:
       - ./html:/usr/share/nginx/html:ro
       - ./nginx:/etc/nginx/conf.d:ro
