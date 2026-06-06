@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>추피 오디오북</title>
-  <script src="https://unpkg.com/html5-qrcode"></script>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -80,6 +80,15 @@
       margin: 1rem auto;
     }
 
+    #status-message {
+      min-height: 1.5rem;
+      margin: 0.5rem auto 1rem;
+      color: #555;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      max-width: 420px;
+    }
+
     #cover-wrapper {
       display: flex;
       flex-direction: column;
@@ -122,7 +131,8 @@
         max-width: 240px;
       }
 
-      #cover-image {
+      #cover-image,
+      #qr-reader {
         max-width: 90%;
       }
     }
@@ -135,11 +145,12 @@
   <div class="control-panel">
     <div class="inline-input-group">
       <input type="number" id="book-number-input" placeholder="책 번호 입력 (예: 6)" />
-      <button onclick="playFromInput()">재생</button>
+      <button id="play-button" type="button">재생</button>
     </div>
-    <button onclick="startScanner()">📷 QR 코드 인식</button>
+    <button id="scan-button" type="button">📷 QR 코드 인식</button>
   </div>
 
+  <div id="status-message" aria-live="polite"></div>
   <div id="qr-reader" style="display: none;"></div>
 
   <div id="cover-wrapper">
@@ -147,75 +158,7 @@
     <audio id="audio-player" controls autoplay></audio>
   </div>
 
-  <script>
-    const defaultCoverUrl = "default_tchoupi_cover.png";
-    const cover = document.getElementById("cover-image");
-    const audio = document.getElementById("audio-player");
-
-    window.onload = () => {
-      showDefaultCover();
-      document.getElementById("book-number-input").addEventListener("keydown", (e) => {
-        if (e.key === "Enter") {
-          playFromInput();
-        }
-      });
-    };
-
-    function showDefaultCover() {
-      cover.src = defaultCoverUrl;
-      cover.style.display = "block";
-    }
-
-    function startScanner() {
-      const qrReader = document.getElementById("qr-reader");
-      qrReader.style.display = "block";
-
-      const scanner = new Html5Qrcode("qr-reader");
-      scanner.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        (decodedText) => {
-          scanner.stop();
-          qrReader.style.display = "none";
-          const urlParams = new URLSearchParams(decodedText.split('?')[1]);
-          const kind = urlParams.get('kind');
-          const rawNum = kind?.split('_')[1] ?? '00';
-          playAudioFromBookNum(rawNum);
-        },
-        (error) => {
-          console.warn("QR 인식 실패:", error);
-        }
-      );
-    }
-
-    function playFromInput() {
-      const input = document.getElementById("book-number-input").value;
-      if (!input || isNaN(input)) {
-        alert("책 번호를 정확히 입력해주세요.");
-        return;
-      }
-      playAudioFromBookNum(input);
-    }
-
-    function playAudioFromBookNum(number) {
-      const paddedMp3 = number.padStart(3, '0');
-      const paddedCover = number.padStart(2, '0');
-
-      const audioUrl = `http://222.231.33.227:5104/taedong_audio/book/bok_${paddedMp3}.mp3`;
-      const coverUrl = `http://222.231.33.227/webapp/taedong_turnjs/static/cover/cover_tchoupi_${paddedCover}.png`;
-
-      showDefaultCover();
-
-      const testImg = new Image();
-      testImg.onload = () => {
-        cover.src = coverUrl;
-      };
-      testImg.src = coverUrl;
-
-      audio.src = audioUrl;
-      audio.play();
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 
 </html>
