@@ -3,6 +3,7 @@
   const audioBaseUrl = "http://222.231.33.227:5104/taedong_audio/book";
   const coverBaseUrl = "http://222.231.33.227/webapp/taedong_turnjs/static/cover";
   const bookParamNames = ["book", "bookNumber", "num", "n"];
+  const bookPathPattern = /^\/book\/(\d{1,3})\/?$/i;
 
   let scanner = null;
 
@@ -53,7 +54,12 @@
       return kindNumber;
     }
 
-    const pathMatch = url.pathname.match(/(?:book|bok|tchoupi|kind)[_-]?(\d{1,3})(?=$|[._/-])/i);
+    const canonicalPathMatch = url.pathname.match(bookPathPattern);
+    if (canonicalPathMatch) {
+      return normalizeBookNumber(canonicalPathMatch[1]);
+    }
+
+    const pathMatch = url.pathname.match(/(?:book|bok|tchoupi|kind)[_/-]?(\d{1,3})(?=$|[._/-])/i);
     return pathMatch ? normalizeBookNumber(pathMatch[1]) : null;
   }
 
@@ -191,9 +197,7 @@
     });
 
     if (options.updateUrl) {
-      const url = new URL(window.location.href);
-      url.searchParams.set("book", bookNumber);
-      window.history.replaceState({}, "", url);
+      window.history.replaceState({}, "", `/book/${bookNumber}`);
     }
   }
 

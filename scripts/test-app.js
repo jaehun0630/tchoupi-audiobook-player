@@ -55,6 +55,8 @@ assert.equal(normalizeBookNumber("1000"), null);
 
 assert.equal(extractBookNumber("6"), "6");
 assert.equal(extractBookNumber("book_006"), "6");
+assert.equal(extractBookNumber("https://example.com/book/6"), "6");
+assert.equal(extractBookNumber("https://example.com/book/006"), "6");
 assert.equal(extractBookNumber("https://example.com/?book=6"), "6");
 assert.equal(extractBookNumber("https://example.com/?book=006"), "6");
 assert.equal(extractBookNumber("https://example.com/?kind=tchoupi_6"), "6");
@@ -63,6 +65,7 @@ assert.equal(extractBookNumber("https://example.com/player/bok_006.mp3"), "6");
 assert.equal(extractBookNumber("not-a-book"), null);
 
 assert.equal(getNumberFromUrl("http://localhost:8080/?book=12"), "12");
+assert.equal(getNumberFromUrl("http://localhost:8080/book/12"), "12");
 assert.equal(getNumberFromUrl("http://localhost:8080/"), null);
 
 console.log("app parser tests passed");
