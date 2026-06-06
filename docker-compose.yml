@@ -2,28 +2,10 @@ version: '3'
 
 services:
   web:
-    image: nginx:alpine
+    build:
+      context: .
+    image: tchoupi-audiobook-player:latest
     container_name: tchoupi-web
     ports:
       - "8090:8090"
-    volumes:
-      - ./html:/usr/share/nginx/html:ro
-    command:
-      - /bin/sh
-      - -c
-      - |
-        cat > /etc/nginx/conf.d/default.conf <<'EOF'
-        server {
-          listen 8090;
-          server_name _;
-
-          root /usr/share/nginx/html;
-          index index.html;
-
-          location / {
-            try_files $uri $uri/ /index.html;
-          }
-        }
-        EOF
-        nginx -g 'daemon off;'
     restart: unless-stopped
