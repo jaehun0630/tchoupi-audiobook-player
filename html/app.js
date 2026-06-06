@@ -1,5 +1,5 @@
 (function () {
-  const defaultCoverUrl = "default_tchoupi_cover.png";
+  const defaultCoverUrl = "/default_tchoupi_cover.png";
   const audioBaseUrl = "http://222.231.33.227:5104/taedong_audio/book";
   const coverBaseUrl = "http://222.231.33.227/webapp/taedong_turnjs/static/cover";
   const bookParamNames = ["book", "bookNumber", "num", "n"];
